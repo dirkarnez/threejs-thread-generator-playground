@@ -890,9 +890,6 @@
 	
 
 
-     	scene.add(new THREE.Mesh(new ScrewGeometry(), new THREE.MeshLambertMaterial( { color: 0xff8000, wireframe: false } )))
-
-
 		const orbit = new OrbitControls( camera, renderer.domElement );
 		orbit.enableZoom = true;
 
@@ -1018,7 +1015,7 @@
 	// 			scene.add( mesh2 );
 
 
-	scene.add(drawNut(200, 400, new THREE.MeshLambertMaterial({ color: 0xb00000, wireframe: false })));
+	// scene.add(drawNut(200, 400, new THREE.MeshLambertMaterial({ color: 0xb00000, wireframe: false })));
 
 // 	const radius = 20;
 // const height = 100;
@@ -1062,6 +1059,76 @@
 // scene.add(meshHelix);
 		// // Add cube to Scene
 
+
+
+
+
+
+
+
+
+
+
+var rbnWidth = 0.5;
+var rbnThickness = 0.6;
+var rbnSteps = 3;
+var rbnStepLength = 1.2;
+var rbnSegsPerStep = 200;
+var rbnRadius = 1;
+
+var rbnGeom = new THREE.BoxGeometry(rbnSteps * Math.PI * 2, rbnWidth, rbnThickness, rbnSteps * rbnSegsPerStep, 1, 1);
+rbnGeom.computeBoundingBox();
+var size = new THREE.Vector3();
+rbnGeom.boundingBox.getSize(size);
+rbnGeom.translate(size.x * 0.5, size.y * 0.5, size.z * 0.5);
+
+// bend it!
+
+/*rbnGeom.vertices.forEach(v => {
+	let angle = -v.x;
+  let radius = rbnRadius + v.z;
+  let shift = (v.x / (Math.PI * 2)) * rbnStepLength + v.y;
+  
+  v.x = Math.cos(angle) * radius;
+  v.y = shift;
+  v.z = Math.sin(angle) * radius;
+});*/
+let pos = rbnGeom.attributes.position;
+let v = new THREE.Vector3();
+for(let i = 0; i < pos.count; i++){
+	v.fromBufferAttribute(pos, i);
+  let angle = -v.x;
+  let radius = rbnRadius + v.z;
+  let shift = (v.x / (Math.PI * 2)) * rbnStepLength + v.y;
+  
+  pos.setXYZ(
+  i,
+  Math.cos(angle) * radius,
+  shift,
+  Math.sin(angle) * radius
+  )
+}
+
+rbnGeom.computeVertexNormals();
+
+rbnGeom.center();
+
+
+var ribbon = new THREE.Mesh(rbnGeom, new THREE.MeshStandardMaterial({color: 0x0099ff, metalness: 0.5, roughness: 0.25}));
+scene.add(ribbon);
+
+
+
+
+
+
+
+
+
+
+
+
+		
 
 		// Render Loop
 		var render = function () {
