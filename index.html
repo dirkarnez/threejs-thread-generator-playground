@@ -48,7 +48,7 @@
 		scene.background = new THREE.Color( 0x444444 );
 		
 		// Create a basic perspective camera
-		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 50);
+		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 		camera.position.z = 30;
 
 		// Create a renderer with Antialiasing
@@ -83,39 +83,154 @@
 		scene.add( lights[ 1 ] );
 		scene.add( lights[ 2 ] );
 	
-		
-		const group = new THREE.Group();
+    //   // Thread parameters
+	//   	const threadHeight = 2; // Height of the triangle in mm
+    //     const threadBase = 4;   // Base length of the triangle in mm
+    //     const threadPitch = 1;  // M6 thread pitch in mm
+    //     const threadLength = 30; // Length of the thread
+    //     const turns = threadLength / threadPitch; // Number of turns
 
-		const geometry = new THREE.BufferGeometry();
-		geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( [], 3 ) );
+    //     // Create the shape for the triangular thread profile
+    //     const shape = new THREE.Shape();
 
-		const lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.5 } );
-		const meshMaterial = new THREE.MeshPhongMaterial( { color: 0x156289, emissive: 0x072534, side: THREE.DoubleSide, flatShading: true } );
+    //     // Create extrusion settings
+    //     const extrudeSettings = {
+    //         steps: 1,
+    //         depth: threadPitch, // Depth of each thread for extrusion
+    //         bevelEnabled: false
+    //     };
 
-		group.add( new THREE.LineSegments( geometry, lineMaterial ) );
-		group.add( new THREE.Mesh( geometry, meshMaterial ) );
-		
-	
-		
-		const data = {
-			width: 15,
-			height: 15,
-			depth: 15,
-			widthSegments: 1,
-			heightSegments: 1,
-			depthSegments: 1
-		};
-		
-		group.children[ 0 ].geometry.dispose();
-		group.children[ 1 ].geometry.dispose();
-		
-		const boxGeometry = new THREE.BoxGeometry(data.width, data.height, data.depth, data.widthSegments, data.heightSegments, data.depthSegments);
-		
-		group.children[ 0 ].geometry = new THREE.WireframeGeometry( boxGeometry );
-		group.children[ 1 ].geometry = boxGeometry;
-	
-		scene.add(group);
+    //     // Create the thread geometry
+    //     const threadGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        
+    //     // Create the thread mesh
+    //     const material = new THREE.MeshStandardMaterial({ color: 0xcccccc });
+    //     const thread = new THREE.Mesh(threadGeometry, material);
 
+    //     // Position the thread correctly
+    //     thread.rotation.x = Math.PI / 2; // Rotate to lay flat
+
+    //     // Create the spiral shape for the thread
+    //     const spiralPoints = [];
+    //     for (let i = 0; i <= turns * 32; i++) {
+    //         const angle = (i / 32) * Math.PI * 2 * turns;
+    //         const x = (threadBase / 2) * Math.cos(angle);
+    //         const y = (threadBase / 2) * Math.sin(angle);
+    //         const z = (i / 32) * threadPitch; // Vertical position
+    //         spiralPoints.push(new THREE.Vector3(x, y, z));
+    //     }
+
+    //     // Create the spiral geometry
+    //     const spiralGeometry = new THREE.BufferGeometry().setFromPoints(spiralPoints);
+    //     const spiralMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+    //     const spiral = new THREE.Line(spiralGeometry, spiralMaterial);
+        
+    //     // Add objects to the scene
+    //     scene.add(thread);
+    //     scene.add(spiral);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// 	const randomPoints = [];
+
+	// 		for ( let i = 0; i < 100; i ++ ) {
+
+	// 			const angle = (i / 32) * Math.PI * 2 * turns;
+	// 			const x = (threadBase / 2) * Math.cos(angle);
+	// 			const y = (threadBase / 2) * Math.sin(angle);
+	// 			const z = (i / 32) * threadPitch; // Vertical position
+	// 			randomPoints.push(new THREE.Vector3(x, y, z));
+
+	// 			//randomPoints.push( new THREE.Vector3( ( i - 4.5 ) * 50, THREE.MathUtils.randFloat( - 50, 50 ), THREE.MathUtils.randFloat( - 50, 50 ) ) );
+
+	// 		}
+
+	// 			const randomSpline = new THREE.CatmullRomCurve3( randomPoints );
+
+	// 			//
+
+	// 			const extrudeSettings2 = {
+	// 				steps: 200,
+	// 				bevelEnabled: false,
+	// 				extrudePath: randomSpline
+	// 			};
+
+
+	// 			// const pts2 = [], numPts = 5;
+
+	// 			// for ( let i = 0; i < numPts * 2; i ++ ) {
+
+	// 			// 	const l = i % 2 == 1 ? 10 : 20;
+
+	// 			// 	const a = i / numPts * Math.PI;
+					
+
+	// 			// 	pts2.push( new THREE.Vector2( Math.cos( a ) * l, Math.sin( a ) * l ) );
+
+	// 			// }
+
+	// 			const shape2 = new THREE.PlaneGeometry( 1, 1 );
+
+	// 			const geometry2 = new THREE.ExtrudeGeometry( shape2, extrudeSettings2 );
+
+	// 			const material2 = new THREE.MeshLambertMaterial( { color: 0xff8000, wireframe: false } );
+
+	// 			const mesh2 = new THREE.Mesh( geometry2, material2 );
+
+	// 			scene.add( mesh2 );
+
+	const radius = 20;
+const height = 100;
+const turns = 5;
+const pointsCount = 1000;
+
+// Create a helix curve
+const helixPoints = [];
+for (let i = 0; i <= pointsCount; i++) {
+    const angle = (i / pointsCount) * turns * Math.PI * 2; // Full turns
+    const x = radius * Math.cos(angle);
+    const y = height * (i / pointsCount); // Height increases linearly
+    const z = radius * Math.sin(angle);
+    helixPoints.push(new THREE.Vector3(x, y, z));
+}
+
+const helixSpline = new THREE.CatmullRomCurve3(helixPoints);
+helixSpline.curveType = 'catmullrom';
+helixSpline.closed = false; // Not a closed helix
+
+const extrudeSettingsHelix = {
+    steps: 100,
+    bevelEnabled: false,
+    extrudePath: helixSpline
+};
+
+// Create a circular shape for the extrusion
+const ptsHelix = [];
+const circlePoints = 2000; // Number of points in the circle
+
+for (let i = 0; i < circlePoints; i++) {
+    const angle = (i / circlePoints) * Math.PI * 2;
+    ptsHelix.push(new THREE.Vector2(Math.cos(angle), Math.sin(angle))); // Unit circle
+}
+
+const shapeHelix = new THREE.Shape(ptsHelix);
+const geometryHelix = new THREE.ExtrudeGeometry(shapeHelix, extrudeSettingsHelix);
+const materialHelix = new THREE.MeshLambertMaterial({ color: 0xb00000, wireframe: false });
+
+const meshHelix = new THREE.Mesh(geometryHelix, materialHelix);
+scene.add(meshHelix);
 		// // Add cube to Scene
 
 
@@ -124,8 +239,8 @@
 			requestAnimationFrame(render);
 			
 
-			group.rotation.x += 0.005;
-			group.rotation.y += 0.005;
+			// group.rotation.x += 0.005;
+			// group.rotation.y += 0.005;
 
 
 			// Render the scene
