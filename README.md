@@ -11,3 +11,26 @@ https://github.com/gumyr/cq_warehouse/blob/daa46507ecc429c0e2dce11d9d5ffd09b12a4
 https://github.com/openvmp/partcad-cqwarehouse/blob/a9b3b7d5a701018248747d10ac35edc9082be529/fastener/hexheadwithflange-din1662.py
 ISO4014
 https://github.com/misams/BAT/blob/6f39c08201bba0f4034c281c5a22f8d9927bc0a9/BAT/db/ISO4014_4017_hex_metric.bolt#L4
+```
+https://github.com/mrdoob/three.js/blob/dev/examples/jsm/curves/CurveExtras.js#L119
+class HelixCurve extends Curve {
+
+	getPoint( t, optionalTarget = new Vector3() ) {
+
+		const point = optionalTarget;
+
+		const a = 30; // radius
+		const b = 150; // height
+
+		const t2 = 2 * Math.PI * t * b / 30;
+
+		const x = Math.cos( t2 ) * a;
+		const y = Math.sin( t2 ) * a;
+		const z = b * t;
+
+		return point.set( x, y, z );
+
+	}
+
+}
+```
